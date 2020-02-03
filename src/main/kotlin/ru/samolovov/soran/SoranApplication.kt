@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SoranApplication
 
 fun main(args: Array<String>) {
-	runApplication<SoranApplication>(*args)
+    runApplication<SoranApplication>(*args)
 }
