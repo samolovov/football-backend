@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="psamolovov" id="season_teams-01">
+        <createTable tableName="season_teams">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="season_id" type="bigint">
+                <constraints nullable="false" references="seasons(id)" foreignKeyName="season_teams_seasons_fk"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="false" references="teams(id)" foreignKeyName="season_teams_teams_fk"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

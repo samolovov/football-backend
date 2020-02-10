@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!-- schema -->
+    <include file="init/referees.xml" relativeToChangelogFile="true"/>
+    <include file="init/players.xml" relativeToChangelogFile="true"/>
+    <include file="init/teams.xml" relativeToChangelogFile="true"/>
+    <include file="init/tournaments.xml" relativeToChangelogFile="true"/>
+    <include file="init/seasons.xml" relativeToChangelogFile="true"/>
+    <include file="init/season_teams.xml" relativeToChangelogFile="true"/>
+    <include file="init/season_team_players.xml" relativeToChangelogFile="true"/>
+    <include file="init/games.xml" relativeToChangelogFile="true"/>
+    <include file="init/game_details.xml" relativeToChangelogFile="true"/>
+    <!-- data -->
+    <include file="init/data.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="psamolovov" id="game_details-01">
+        <createTable tableName="game_details">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="game_id" type="bigint">
+                <constraints nullable="false" references="games(id)" foreignKeyName="game_details_games_fk"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="false" references="teams(id)" foreignKeyName="game_details_teams_fk"/>
+            </column>
+            <column name="player_id" type="bigint">
+                <constraints nullable="false" references="players(id)" foreignKeyName="game_details_players_fk"/>
+            </column>
+            <column name="type" type="varchar">
+                <!-- yellow, red, goal, autogoal-->
+                <constraints nullable="false"/>
+            </column>
+            <column name="minute" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
