@@ -13,10 +13,10 @@ class TeamController(
     @PostMapping
     fun create(@Valid @RequestBody team: TeamDto) = teamService.create(team)
 
-    @PutMapping("/teams/{id}")
+    @PutMapping("/{id}")
     fun update(@PathVariable("id") id: Long, @Valid @RequestBody team: TeamDto) = teamService.update(id, team)
 
-    @GetMapping("/teams/{id}")
+    @GetMapping("/{id}")
     fun loadOne(@PathVariable("id") id: Long) = teamService.loadById(id)
 
     @GetMapping

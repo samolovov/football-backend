@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import ru.samolovov.soran.entity.Player
 
 @Repository
-interface PlayerRepository : CrudRepository<Player, Long> {
-}
+interface PlayerRepository : CrudRepository<Player, Long>

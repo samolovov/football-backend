@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import ru.samolovov.soran.entity.Team
 
 @Repository
-interface TeamRepository : CrudRepository<Team, Long> {
-}
+interface TeamRepository : CrudRepository<Team, Long>
