@@ -16,7 +16,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="birthday" type="date"/>
-            <column name="avatar" type="blob"/>
+            <column name="avatar" type="varchar"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
