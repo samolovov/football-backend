@@ -44,7 +44,7 @@ private fun Team.update(teamDto: TeamDto) {
     this.description = teamDto.description
 }
 
-private fun Team.toTeamDto() = TeamDto(
+internal fun Team.toTeamDto() = TeamDto(
     id = id,
     birthday = birthday,
     name = name,

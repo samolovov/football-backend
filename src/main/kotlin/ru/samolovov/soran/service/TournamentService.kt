@@ -38,7 +38,7 @@ private fun Tournament.update(tournamentDto: TournamentDto) {
     this.name = tournamentDto.name
 }
 
-private fun Tournament.toTournamentDto() = TournamentDto(
+internal fun Tournament.toTournamentDto() = TournamentDto(
     id = id,
     name = name
 )
