@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import ru.samolovov.soran.entity.Season
 
 @Repository
-interface SeasonRepository : CrudRepository<Season, Long>
+interface SeasonRepository : CrudRepository<Season, Long> {
+    fun findByTournamentId(id: Long): List<Season>
+}

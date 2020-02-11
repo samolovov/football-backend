@@ -65,6 +65,8 @@ class SeasonService(
     }
 
     fun loadAll() = seasonRepository.findAll().map { it.toSeasonDto() }
+
+    fun loadByTournamentId(id: Long) = seasonRepository.findByTournamentId(id)
 }
 
 private fun Season.toSeasonDto() = SeasonResponseDto(

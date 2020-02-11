@@ -2,13 +2,15 @@ package ru.samolovov.soran.controller
 
 import org.springframework.web.bind.annotation.*
 import ru.samolovov.soran.dto.TournamentDto
+import ru.samolovov.soran.service.SeasonService
 import ru.samolovov.soran.service.TournamentService
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/tournaments")
 class TournamentController(
-    private val tournamentService: TournamentService
+    private val tournamentService: TournamentService,
+    private val seasonService: SeasonService
 ) {
     @PostMapping
     fun create(@Valid @RequestBody tournament: TournamentDto) = tournamentService.create(tournament)
@@ -22,4 +24,7 @@ class TournamentController(
 
     @GetMapping
     fun loadAll() = tournamentService.loadAll()
+
+    @GetMapping("/{id}/seasons")
+    fun loadSeasons(@PathVariable("id") id: Long) = seasonService.loadByTournamentId(id)
 }
