@@ -43,7 +43,7 @@ private fun Referee.update(refereeDto: RefereeDto) {
 
 }
 
-private fun Referee.toRefereeDto() = RefereeDto(
+internal fun Referee.toRefereeDto() = RefereeDto(
     id = id,
     firstName = firstName,
     lastName = lastName,

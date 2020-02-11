@@ -69,7 +69,7 @@ class SeasonService(
     fun loadByTournamentId(id: Long) = seasonRepository.findByTournamentId(id)
 }
 
-private fun Season.toSeasonDto() = SeasonResponseDto(
+internal fun Season.toSeasonDto() = SeasonResponseDto(
     id = id,
     startDate = startDate,
     endDate = endDate,

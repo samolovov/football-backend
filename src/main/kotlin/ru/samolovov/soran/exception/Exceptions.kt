@@ -13,6 +13,9 @@ class TeamsNotFoundException(ids: Set<Long>) : RuntimeException("Teams with ids=
 class PlayerNotFoundException(id: Long) : RuntimeException("Player with id=$id not found")
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
+class GameNotFoundException(id: Long) : RuntimeException("Game with id=$id not found")
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
 class RefereeNotFoundException(id: Long) : RuntimeException("Referee with id=$id not found")
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
