@@ -71,7 +71,7 @@ class GameService(
     fun loadAll() = gameRepository.findAll().map { it.toGameDto() }
 }
 
-private fun Game.toGameDto() = GameResponseDto(
+internal fun Game.toGameDto() = GameResponseDto(
     id = id,
     season = season.toSeasonDto(),
     firstTeam = firstTeam.toTeamDto(),

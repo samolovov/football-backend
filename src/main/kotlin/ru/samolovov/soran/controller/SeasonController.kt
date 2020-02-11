@@ -22,4 +22,7 @@ class SeasonController(
 
     @GetMapping
     fun loadAll() = seasonService.loadAll()
+
+    @GetMapping("/{id}/games")
+    fun loadGames(@PathVariable("id") id: Long) = seasonService.loadGames(id)
 }
