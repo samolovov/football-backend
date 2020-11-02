@@ -25,5 +25,5 @@ class SeasonTeam(
         joinColumns = [JoinColumn(name = "season_team_id")],
         inverseJoinColumns = [JoinColumn(name = "player_id")]
     )
-    val players: Set<Player> = emptySet()
+    var players: Set<Player> = emptySet()
 ) : BaseEntity()
