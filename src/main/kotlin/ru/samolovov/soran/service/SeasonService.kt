@@ -6,6 +6,7 @@ import ru.samolovov.soran.dto.GameResponseDto
 import ru.samolovov.soran.dto.SeasonRequestDto
 import ru.samolovov.soran.dto.SeasonResponseDto
 import ru.samolovov.soran.entity.Season
+import ru.samolovov.soran.entity.SeasonTeam
 import ru.samolovov.soran.entity.Team
 import ru.samolovov.soran.exception.SeasonNotFoundException
 import ru.samolovov.soran.exception.TeamNotFoundException
@@ -23,41 +24,31 @@ class SeasonService(
     private val teamRepository: TeamRepository,
     private val seasonRepository: SeasonRepository
 ) {
-    private fun checkMissedTeams(givenTeamIds: Set<Long>, teams: Iterable<Team>) {
+    private fun findTeamsOrThrow(teamIds: Set<Long>): Iterable<Team> {
+        val teams = teamRepository.findAllById(teamIds)
         val foundTeamIds = teams.mapNotNull { it.id }
-        val missedIds = givenTeamIds - foundTeamIds
+        val missedIds = teamIds - foundTeamIds
         if (missedIds.isNotEmpty()) throw TeamsNotFoundException(missedIds)
+        return teams
     }
 
-    fun create(season: SeasonRequestDto): SeasonResponseDto {
-        val tournament = tournamentRepository.findByIdOrNull(season.tournamentId) ?: throw TournamentNotFoundException(
-            season.tournamentId
-        )
-        val teams = teamRepository.findAllById(season.teamIds)
-        checkMissedTeams(season.teamIds, teams)
+    fun create(seasonDto: SeasonRequestDto): SeasonResponseDto {
+        val tournament = tournamentRepository.findByIdOrNull(seasonDto.tournamentId)
+            ?: throw TournamentNotFoundException(seasonDto.tournamentId)
 
-        return seasonRepository.save(
-            with(season) {
-                Season(
-                    tournament = tournament,
-                    teams = teams.toSet(),
-                    startDate = startDate,
-                    endDate = endDate
-                )
-            }
-        ).toSeasonDto()
+        val season = Season(
+            tournament = tournament,
+            startDate = seasonDto.startDate,
+            endDate = seasonDto.endDate
+        )
+        season.teams = findTeamsOrThrow(seasonDto.teamIds).map { SeasonTeam(season, it) }.toSet()
+
+        return seasonRepository.save(season).toSeasonDto()
     }
 
     fun update(id: Long, seasonDto: SeasonRequestDto): SeasonResponseDto {
         val season = seasonRepository.findByIdOrNull(id) ?: throw SeasonNotFoundException(id)
-        //we don't need to update tournament, only teams and dates
-        val teams = teamRepository.findAllById(seasonDto.teamIds)
-        checkMissedTeams(seasonDto.teamIds, teams)
-
-        season.startDate = seasonDto.startDate
-        season.endDate = seasonDto.endDate
-        season.teams = teams.toSet()
-
+        season.update(seasonDto)
         return seasonRepository.save(season).toSeasonDto()
     }
 
@@ -73,6 +64,12 @@ class SeasonService(
         val season = seasonRepository.findByIdOrNull(id) ?: throw SeasonNotFoundException(id)
         return season.games.map { it.toGameDto() }
     }
+
+    private fun Season.update(seasonDto: SeasonRequestDto) {
+        this.startDate = seasonDto.startDate
+        this.endDate = seasonDto.endDate
+        this.teams = findTeamsOrThrow(seasonDto.teamIds).map { SeasonTeam(this, it) }.toMutableSet()
+    }
 }
 
 internal fun Season.toSeasonDto() = SeasonResponseDto(
@@ -80,5 +77,5 @@ internal fun Season.toSeasonDto() = SeasonResponseDto(
     startDate = startDate,
     endDate = endDate,
     tournament = tournament.toTournamentDto(),
-    teams = teams.map { it.toTeamDto() }
+    teams = teams.map { it.team.toTeamDto() }
 )

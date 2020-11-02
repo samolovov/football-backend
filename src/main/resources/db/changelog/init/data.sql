@@ -7,8 +7,8 @@ insert into tournaments values (1, 'Зимнее первенство СОРАН
 insert into seasons values (1, 1, '2019-11-10', '2020-04-01');
 insert into season_teams values (1, 1, 1);
 insert into season_teams values (2, 1, 2);
-insert into season_team_players values (1, 1, 1, 1);
-insert into season_team_players values (2, 1, 2, 2);
+insert into season_team_players values (1, 1, 1);
+insert into season_team_players values (2, 2, 2);
 insert into games values (1, 1, 1, 2, 3, 0, 1);
 -- game details
 insert into game_details values (1, 1, 1, 1, 'goal', 20);

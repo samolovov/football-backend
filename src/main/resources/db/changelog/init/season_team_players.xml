@@ -9,11 +9,8 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="season_id" type="bigint">
-                <constraints nullable="false" references="seasons(id)" foreignKeyName="season_team_players_seasons_fk"/>
-            </column>
-            <column name="team_id" type="bigint">
-                <constraints nullable="false" references="teams(id)" foreignKeyName="season_team_players_teams_fk"/>
+            <column name="season_team_id" type="bigint">
+                <constraints nullable="false" references="season_teams(id)" foreignKeyName="season_team_players_season_teams_fk"/>
             </column>
             <column name="player_id" type="bigint">
                 <constraints nullable="false" references="players(id)" foreignKeyName="season_team_players_players_fk"/>

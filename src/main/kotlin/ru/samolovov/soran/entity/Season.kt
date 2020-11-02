@@ -1,7 +1,14 @@
 package ru.samolovov.soran.entity
 
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "seasons")
@@ -10,13 +17,8 @@ class Season(
     @JoinColumn(name = "tournament_id")
     val tournament: Tournament,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    @JoinTable(
-        name = "season_teams",
-        joinColumns = [JoinColumn(name = "season_id")],
-        inverseJoinColumns = [JoinColumn(name = "team_id")]
-    )
-    var teams: Set<Team> = emptySet(),
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "season")
+    var teams: Set<SeasonTeam> = emptySet(),
 
     @Column(name = "start_date")
     var startDate: LocalDate,
