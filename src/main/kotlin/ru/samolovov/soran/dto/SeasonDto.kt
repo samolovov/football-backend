@@ -2,10 +2,10 @@ package ru.samolovov.soran.dto
 
 import java.time.LocalDate
 
-class SeasonResponseDto(
+class SeasonDto(
     val id: Long? = null,
-    val tournament: TournamentDto,
-    val teams: List<TeamDto> = emptyList(),
+    val tournamentId: Long,
+    val teamIds: Set<Long> = emptySet(),
     val startDate: LocalDate,
     val endDate: LocalDate
 )

@@ -3,8 +3,7 @@ package ru.samolovov.soran.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import ru.samolovov.soran.dto.GameResponseDto
-import ru.samolovov.soran.dto.SeasonRequestDto
-import ru.samolovov.soran.dto.SeasonResponseDto
+import ru.samolovov.soran.dto.SeasonDto
 import ru.samolovov.soran.entity.Season
 import ru.samolovov.soran.entity.SeasonTeam
 import ru.samolovov.soran.entity.Team
@@ -32,7 +31,7 @@ class SeasonService(
         return teams
     }
 
-    fun create(seasonDto: SeasonRequestDto): SeasonResponseDto {
+    fun create(seasonDto: SeasonDto): SeasonDto {
         val tournament = tournamentRepository.findByIdOrNull(seasonDto.tournamentId)
             ?: throw TournamentNotFoundException(seasonDto.tournamentId)
 
@@ -46,13 +45,13 @@ class SeasonService(
         return seasonRepository.save(season).toSeasonDto()
     }
 
-    fun update(id: Long, seasonDto: SeasonRequestDto): SeasonResponseDto {
+    fun update(id: Long, seasonDto: SeasonDto): SeasonDto {
         val season = seasonRepository.findByIdOrNull(id) ?: throw SeasonNotFoundException(id)
         season.update(seasonDto)
         return seasonRepository.save(season).toSeasonDto()
     }
 
-    fun loadById(id: Long): SeasonResponseDto {
+    fun loadById(id: Long): SeasonDto {
         return seasonRepository.findByIdOrNull(id)?.toSeasonDto() ?: throw TeamNotFoundException(id)
     }
 
@@ -65,17 +64,17 @@ class SeasonService(
         return season.games.map { it.toGameDto() }
     }
 
-    private fun Season.update(seasonDto: SeasonRequestDto) {
+    private fun Season.update(seasonDto: SeasonDto) {
         this.startDate = seasonDto.startDate
         this.endDate = seasonDto.endDate
         this.teams = findTeamsOrThrow(seasonDto.teamIds).map { SeasonTeam(this, it) }.toMutableSet()
     }
 }
 
-internal fun Season.toSeasonDto() = SeasonResponseDto(
+internal fun Season.toSeasonDto() = SeasonDto(
     id = id,
     startDate = startDate,
     endDate = endDate,
-    tournament = tournament.toTournamentDto(),
-    teams = teams.map { it.team.toTeamDto() }
+    tournamentId = tournament.id!!,
+    teamIds = teams.map { it.team.id!! }.toSet()
 )

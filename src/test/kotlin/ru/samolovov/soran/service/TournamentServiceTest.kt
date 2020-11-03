@@ -15,7 +15,7 @@ internal class TournamentServiceTest(
 
     @Test
     fun `test create tournament`() {
-        val notCreated = createTournamentDto()
+        val notCreated = buildNew()
         val created = tournamentService.create(notCreated)
 
         assertThat(created.id).isNotNull()
@@ -24,12 +24,8 @@ internal class TournamentServiceTest(
 
     @Test
     fun `test update tournament`() {
-        val created = tournamentService.create(createTournamentDto())
-
-        val notUpdated = TournamentDto(
-            name = "Осеннее первенство СОРАН"
-        )
-
+        val created = tournamentService.create(buildNew())
+        val notUpdated = buildUpdated()
         val updated = tournamentService.update(created.id!!, notUpdated)
 
         assertThat(updated.id).isEqualTo(created.id!!)
@@ -38,7 +34,7 @@ internal class TournamentServiceTest(
 
     @Test
     fun `test load by id`() {
-        val created = tournamentService.create(createTournamentDto())
+        val created = tournamentService.create(buildNew())
         val loaded = tournamentService.loadById(created.id!!)
 
         assertThat(loaded.id).isEqualTo(created.id!!)
@@ -49,7 +45,6 @@ internal class TournamentServiceTest(
         assertThat(first.name).isEqualTo(second.name)
     }
 
-    private fun createTournamentDto() = TournamentDto(
-        name = "Летнее первенство СОРАН"
-    )
+    private fun buildNew() = buildTournament("Осенний СОРАН")
+    private fun buildUpdated() = buildTournament("Осеннее первенство СОРАН")
 }

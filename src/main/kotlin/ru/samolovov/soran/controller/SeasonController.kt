@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.samolovov.soran.dto.SeasonRequestDto
+import ru.samolovov.soran.dto.SeasonDto
 import ru.samolovov.soran.service.SeasonService
 import javax.validation.Valid
 
@@ -17,10 +17,10 @@ class SeasonController(
     private val seasonService: SeasonService
 ) {
     @PostMapping
-    fun create(@Valid @RequestBody season: SeasonRequestDto) = seasonService.create(season)
+    fun create(@Valid @RequestBody season: SeasonDto) = seasonService.create(season)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("id") id: Long, @Valid @RequestBody season: SeasonRequestDto) =
+    fun update(@PathVariable("id") id: Long, @Valid @RequestBody season: SeasonDto) =
         seasonService.update(id, season)
 
     @GetMapping("/{id}")

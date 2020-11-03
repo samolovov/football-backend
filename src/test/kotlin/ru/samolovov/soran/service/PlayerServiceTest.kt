@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional
 import ru.samolovov.soran.IntegrationTests
 import ru.samolovov.soran.dto.PlayerDto
 import ru.samolovov.soran.dto.Position
-import java.time.LocalDate
 
 @Transactional
 internal class PlayerServiceTest(
@@ -17,7 +16,7 @@ internal class PlayerServiceTest(
 
     @Test
     fun `test create player`() {
-        val notCreated = createPlayerDto()
+        val notCreated = buildNew()
         val created = playerService.create(notCreated)
 
         assertThat(created.id).isNotNull()
@@ -26,15 +25,8 @@ internal class PlayerServiceTest(
 
     @Test
     fun `test update player`() {
-        val created = playerService.create(createPlayerDto())
-
-        val notUpdated = PlayerDto(
-            firstName = "Andrey",
-            lastName = "Arshavin",
-            avatar = "arshavin.png",
-            position = Position.FORWARD,
-            birthday = LocalDate.of(1977, 3, 17)
-        )
+        val created = playerService.create(buildNew())
+        val notUpdated = buildUpdated()
 
         val updated = playerService.update(created.id!!, notUpdated)
 
@@ -44,7 +36,7 @@ internal class PlayerServiceTest(
 
     @Test
     fun `test load by id`() {
-        val created = playerService.create(createPlayerDto())
+        val created = playerService.create(buildNew())
         val loaded = playerService.loadById(created.id!!)
 
         assertThat(loaded.id).isEqualTo(created.id!!)
@@ -59,11 +51,6 @@ internal class PlayerServiceTest(
         assertThat(first.birthday).isEqualTo(second.birthday)
     }
 
-    private fun createPlayerDto() = PlayerDto(
-        firstName = "Pavel",
-        lastName = "Samolovov",
-        avatar = "samolovov.png",
-        position = Position.MIDFIELDER,
-        birthday = LocalDate.of(1988, 2, 24)
-    )
+    private fun buildNew() = buildPlayer("Pavel", "Samolovov", Position.MIDFIELDER)
+    private fun buildUpdated() = buildPlayer("Andrey", "Arshavin", Position.FORWARD)
 }

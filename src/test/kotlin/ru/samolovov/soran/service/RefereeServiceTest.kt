@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import ru.samolovov.soran.IntegrationTests
 import ru.samolovov.soran.dto.RefereeDto
-import java.time.LocalDate
 
 @Transactional
 internal class RefereeServiceTest(
@@ -16,7 +15,7 @@ internal class RefereeServiceTest(
 
     @Test
     fun `test create referee`() {
-        val notCreated = createRefereeDto()
+        val notCreated = buildNew()
         val created = refereeService.create(notCreated)
 
         assertThat(created.id).isNotNull()
@@ -25,14 +24,8 @@ internal class RefereeServiceTest(
 
     @Test
     fun `test update referee`() {
-        val created = refereeService.create(createRefereeDto())
-
-        val notUpdated = RefereeDto(
-            firstName = "Sergey",
-            lastName = "Karasev",
-            avatar = "karasev.png",
-            birthday = LocalDate.of(1982, 9, 3)
-        )
+        val created = refereeService.create(buildNew())
+        val notUpdated = buildUpdated()
 
         val updated = refereeService.update(created.id!!, notUpdated)
 
@@ -42,7 +35,7 @@ internal class RefereeServiceTest(
 
     @Test
     fun `test load by id`() {
-        val created = refereeService.create(createRefereeDto())
+        val created = refereeService.create(buildNew())
         val loaded = refereeService.loadById(created.id!!)
 
         assertThat(loaded.id).isEqualTo(created.id!!)
@@ -56,10 +49,6 @@ internal class RefereeServiceTest(
         assertThat(first.birthday).isEqualTo(second.birthday)
     }
 
-    private fun createRefereeDto() = RefereeDto(
-        firstName = "Pier Luidzhi",
-        lastName = "Kollina",
-        avatar = "kollina.png",
-        birthday = LocalDate.of(1970, 4, 12)
-    )
+    private fun buildNew() = buildReferee("Sergey", "Karasev")
+    private fun buildUpdated() = buildReferee("Markus", "Merk")
 }

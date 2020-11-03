@@ -16,7 +16,7 @@ internal class TeamServiceTest(
 
     @Test
     fun `test create team`() {
-        val notCreated = createTeamDto()
+        val notCreated = buildNew()
         val created = teamService.create(notCreated)
 
         assertThat(created.id).isNotNull()
@@ -25,14 +25,8 @@ internal class TeamServiceTest(
 
     @Test
     fun `test update team`() {
-        val created = teamService.create(createTeamDto())
-
-        val notUpdated = TeamDto(
-            name = "Джокеррр",
-            avatar = "dzhoker_new.png",
-            description = "Прошлогодние чемпионы СОРАН",
-            birthday = LocalDate.of(2015, 1, 2)
-        )
+        val created = teamService.create(buildNew())
+        val notUpdated = buildUpdated()
 
         val updated = teamService.update(created.id!!, notUpdated)
 
@@ -42,7 +36,7 @@ internal class TeamServiceTest(
 
     @Test
     fun `test load by id`() {
-        val created = teamService.create(createTeamDto())
+        val created = teamService.create(buildNew())
         val loaded = teamService.loadById(created.id!!)
 
         assertThat(loaded.id).isEqualTo(created.id!!)
@@ -56,10 +50,6 @@ internal class TeamServiceTest(
         assertThat(first.birthday).isEqualTo(second.birthday)
     }
 
-    private fun createTeamDto() = TeamDto(
-        name = "Джокер",
-        avatar = "dzhoker.png",
-        description = "Топовая команда СОРАН",
-        birthday = LocalDate.of(2015, 1, 1)
-    )
+    private fun buildNew() = buildTeam("Джокер")
+    private fun buildUpdated() = buildTeam("Первомаец")
 }

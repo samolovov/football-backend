@@ -2,7 +2,7 @@ package ru.samolovov.soran.dto
 
 class GameResponseDto(
     val id: Long?,
-    val season: SeasonResponseDto,
+    val season: SeasonDto,
     val firstTeam: TeamDto,
     val secondTeam: TeamDto,
     val firstTeamGoals: Int,
