@@ -33,6 +33,7 @@ class SeasonTeamService(
     }
 
     private fun SeasonTeam.toDto() = SeasonTeamDto(
+        id = id,
         seasonId = season.id!!,
         teamId = team.id!!,
         playerIds = players.map { it.id!! }.toSet()

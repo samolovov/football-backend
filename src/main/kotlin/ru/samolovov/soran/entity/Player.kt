@@ -17,6 +17,9 @@ class Player(
     var avatar: String? = null,
     @Column(name = "position")
     @Enumerated(EnumType.STRING)
-    var position: Position? = null
+    var position: Position? = null,
+
+    @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
+    var teams: Set<SeasonTeam> = mutableSetOf()
 ) : BaseEntity()
 

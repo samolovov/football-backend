@@ -1,5 +1,6 @@
 package ru.samolovov.soran.entity
 
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.JoinColumn
@@ -19,7 +20,7 @@ class SeasonTeam(
     @JoinColumn(name = "team_id")
     val team: Team,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "season_team_players",
         joinColumns = [JoinColumn(name = "season_team_id")],
