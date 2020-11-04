@@ -54,6 +54,8 @@ class GameDetailsService(
         return gameDetailsRepository.save(gameDetails).toDto()
     }
 
+    fun loadById(id: Long) = gameDetailsRepository.findByIdOrNull(id)?.toDto() ?: throw GameDetailsNotFoundException(id)
+
     fun delete(id: Long) {
         gameDetailsRepository.deleteById(id)
     }

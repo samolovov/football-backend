@@ -11,8 +11,8 @@ insert into season_team_players values (1, 1, 1);
 insert into season_team_players values (2, 2, 2);
 insert into games values (1, 1, 1, 2, 3, 0, 1);
 -- game details
-insert into game_details values (1, 1, 1, 1, 'goal', 20);
-insert into game_details values (2, 1, 1, 1, 'goal', 25);
-insert into game_details values (3, 1, 1, 1, 'goal', 50);
-insert into game_details values (4, 1, 2, 2, 'red', 45);
+insert into game_details values (1, 1, 1, 1, 'GOAL', 20);
+insert into game_details values (2, 1, 1, 1, 'GOAL', 25);
+insert into game_details values (3, 1, 1, 1, 'GOAL', 50);
+insert into game_details values (4, 1, 2, 2, 'RED', 45);
 
