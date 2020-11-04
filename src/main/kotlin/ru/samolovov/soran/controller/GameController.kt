@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.samolovov.soran.dto.GameRequestDto
+import ru.samolovov.soran.dto.GameDto
 import ru.samolovov.soran.service.GameService
 import javax.validation.Valid
 
@@ -17,11 +17,11 @@ class GameController(
     private val gameService: GameService
 ) {
     @PostMapping
-    fun create(@Valid @RequestBody game: GameRequestDto) =
+    fun create(@Valid @RequestBody game: GameDto) =
         gameService.create(game)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("id") id: Long, @Valid @RequestBody game: GameRequestDto) = gameService.update(id, game)
+    fun update(@PathVariable("id") id: Long, @Valid @RequestBody game: GameDto) = gameService.update(id, game)
 
     @GetMapping("/{id}")
     fun loadOne(@PathVariable("id") id: Long) = gameService.loadById(id)

@@ -26,5 +26,5 @@ class SeasonTeam(
         joinColumns = [JoinColumn(name = "season_team_id")],
         inverseJoinColumns = [JoinColumn(name = "player_id")]
     )
-    var players: Set<Player> = emptySet()
+    var players: MutableSet<Player> = mutableSetOf()
 ) : BaseEntity()

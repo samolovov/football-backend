@@ -1,7 +1,7 @@
 package ru.samolovov.soran.dto
 
-class GameRequestDto(
-    val id: Long?,
+class GameDto(
+    val id: Long? = null,
     val seasonId: Long,
     val firstTeamId: Long,
     val secondTeamId: Long,

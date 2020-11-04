@@ -20,7 +20,7 @@ class SeasonTeamService(
         val seasonTeam = seasonTeamRepository.findBySeasonIdAndTeamId(seasonId, teamId)
             ?: throw SeasonTeamNotFoundException(seasonId, teamId)
 
-        seasonTeam.players = findPlayersOrThrow(seasonTeamDto.playerIds).toSet()
+        seasonTeam.players = findPlayersOrThrow(seasonTeamDto.playerIds).toMutableSet()
 
         return seasonTeamRepository.save(seasonTeam).toDto()
     }

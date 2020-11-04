@@ -26,6 +26,6 @@ class Season(
     @Column(name = "end_date")
     var endDate: LocalDate,
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "season")
-    var games: Set<Game> = emptySet()
+    @OneToMany(mappedBy = "season")
+    var games: MutableSet<Game> = mutableSetOf()
 ) : BaseEntity()

@@ -2,8 +2,7 @@ package ru.samolovov.soran.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import ru.samolovov.soran.dto.GameRequestDto
-import ru.samolovov.soran.dto.GameResponseDto
+import ru.samolovov.soran.dto.GameDto
 import ru.samolovov.soran.entity.Game
 import ru.samolovov.soran.exception.GameNotFoundException
 import ru.samolovov.soran.exception.RefereeNotFoundException
@@ -23,7 +22,7 @@ class GameService(
     private val teamRepository: TeamRepository,
     private val refereeRepository: RefereeRepository
 ) {
-    fun create(gameDto: GameRequestDto): GameResponseDto {
+    fun create(gameDto: GameDto): GameDto {
         val season =
             seasonRepository.findByIdOrNull(gameDto.seasonId) ?: throw SeasonNotFoundException(gameDto.seasonId)
         val firstTeam =
@@ -46,7 +45,7 @@ class GameService(
             }).toGameDto()
     }
 
-    fun update(id: Long, gameDto: GameRequestDto): GameResponseDto {
+    fun update(id: Long, gameDto: GameDto): GameDto {
         val game = gameRepository.findByIdOrNull(id) ?: throw GameNotFoundException(id)
         //don't update season
         val firstTeam =
@@ -71,12 +70,12 @@ class GameService(
     fun loadAll() = gameRepository.findAll().map { it.toGameDto() }
 }
 
-internal fun Game.toGameDto() = GameResponseDto(
+internal fun Game.toGameDto() = GameDto(
     id = id,
-    season = season.toSeasonDto(),
-    firstTeam = firstTeam.toTeamDto(),
-    secondTeam = secondTeam.toTeamDto(),
+    seasonId = season.id!!,
+    firstTeamId = firstTeam.id!!,
+    secondTeamId = secondTeam.id!!,
     firstTeamGoals = firstTeamGoals,
     secondTeamGoals = secondTeamGoals,
-    referee = referee.toRefereeDto()
+    refereeId = referee.id!!
 )

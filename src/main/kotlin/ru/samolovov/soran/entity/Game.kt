@@ -1,9 +1,12 @@
 package ru.samolovov.soran.entity
 
+import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -29,5 +32,8 @@ class Game(
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "referee_id")
-    var referee: Referee
+    var referee: Referee,
+
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var details: MutableSet<GameDetails> = mutableSetOf()
 ) : BaseEntity()

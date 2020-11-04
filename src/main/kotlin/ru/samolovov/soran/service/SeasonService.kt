@@ -2,7 +2,7 @@ package ru.samolovov.soran.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import ru.samolovov.soran.dto.GameResponseDto
+import ru.samolovov.soran.dto.GameDto
 import ru.samolovov.soran.dto.SeasonDto
 import ru.samolovov.soran.entity.Season
 import ru.samolovov.soran.entity.SeasonTeam
@@ -59,7 +59,7 @@ class SeasonService(
 
     fun loadByTournamentId(id: Long) = seasonRepository.findByTournamentId(id)
 
-    fun loadGames(id: Long): List<GameResponseDto> {
+    fun loadGames(id: Long): List<GameDto> {
         val season = seasonRepository.findByIdOrNull(id) ?: throw SeasonNotFoundException(id)
         return season.games.map { it.toGameDto() }
     }

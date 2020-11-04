@@ -20,6 +20,6 @@ class Player(
     var position: Position? = null,
 
     @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
-    var teams: Set<SeasonTeam> = mutableSetOf()
+    var teams: MutableSet<SeasonTeam> = mutableSetOf()
 ) : BaseEntity()
 

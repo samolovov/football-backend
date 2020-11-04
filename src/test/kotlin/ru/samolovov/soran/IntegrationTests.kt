@@ -1,10 +1,12 @@
 package ru.samolovov.soran
 
 import org.springframework.boot.test.context.SpringBootTest
+import ru.samolovov.soran.dto.GameDto
 import ru.samolovov.soran.dto.PlayerDto
 import ru.samolovov.soran.dto.Position
 import ru.samolovov.soran.dto.RefereeDto
 import ru.samolovov.soran.dto.SeasonDto
+import ru.samolovov.soran.dto.SeasonTeamDto
 import ru.samolovov.soran.dto.TeamDto
 import ru.samolovov.soran.dto.TournamentDto
 import java.time.LocalDate
@@ -13,6 +15,28 @@ import kotlin.random.Random
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 abstract class IntegrationTests {
+
+    protected fun buildGame(
+        seasonId: Long,
+        firstTeamId: Long,
+        secondTeamId: Long,
+        firstTeamGoals: Int,
+        secondTeamGoals: Int,
+        refereeId: Long
+    ) = GameDto(
+        seasonId = seasonId,
+        firstTeamId = firstTeamId,
+        secondTeamId = secondTeamId,
+        firstTeamGoals = firstTeamGoals,
+        secondTeamGoals = secondTeamGoals,
+        refereeId = refereeId
+    )
+
+    protected fun buildSeasonTeam(seasonId: Long, teamId: Long, playerIds: Set<Long>) = SeasonTeamDto(
+        seasonId = seasonId,
+        teamId = teamId,
+        playerIds = playerIds
+    )
 
     protected fun buildSeason(tournamentId: Long, teamIds: Set<Long>) = SeasonDto(
         tournamentId = tournamentId,
