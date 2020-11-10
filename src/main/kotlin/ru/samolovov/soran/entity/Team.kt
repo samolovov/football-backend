@@ -7,7 +7,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "teams")
-class Team(
+open class Team(
     @Column(name = "name")
     var name: String,
     @Column(name = "birthday")

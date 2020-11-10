@@ -7,7 +7,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "referees")
-class Referee(
+open class Referee(
     @Column(name = "first_name")
     var firstName: String,
     @Column(name = "last_name")

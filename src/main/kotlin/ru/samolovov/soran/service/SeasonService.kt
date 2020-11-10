@@ -40,7 +40,7 @@ class SeasonService(
             startDate = seasonDto.startDate,
             endDate = seasonDto.endDate
         )
-        season.teams = findTeamsOrThrow(seasonDto.teamIds).map { SeasonTeam(season, it) }.toSet()
+        season.teams = findTeamsOrThrow(seasonDto.teamIds).map { SeasonTeam(season, it) }.toMutableSet()
 
         return seasonRepository.save(season).toSeasonDto()
     }

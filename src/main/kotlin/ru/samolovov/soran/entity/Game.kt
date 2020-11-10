@@ -11,16 +11,16 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "games")
-class Game(
-    @ManyToOne(optional = false)
+open class Game(
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "season_id")
     var season: Season,
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "first_team_id")
     var firstTeam: Team,
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "second_team_id")
     var secondTeam: Team,
 
@@ -30,10 +30,10 @@ class Game(
     @Column(name = "second_team_goals")
     var secondTeamGoals: Int,
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "referee_id")
     var referee: Referee,
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "game")
     var details: MutableSet<GameDetails> = mutableSetOf()
 ) : BaseEntity()

@@ -8,19 +8,20 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import ru.samolovov.soran.dto.Type
+import javax.persistence.FetchType
 
 @Entity
 @Table(name = "game_details")
-class GameDetails(
-    @ManyToOne(optional = false)
+open class GameDetails(
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     val game: Game,
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     var team: Team,
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     var player: Player,
 

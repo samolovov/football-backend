@@ -12,13 +12,13 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "seasons")
-class Season(
-    @ManyToOne
+open class Season(
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tournament_id")
     val tournament: Tournament,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "season")
-    var teams: Set<SeasonTeam> = emptySet(),
+    var teams: MutableSet<SeasonTeam> = mutableSetOf(),
 
     @Column(name = "start_date")
     var startDate: LocalDate,
@@ -26,6 +26,6 @@ class Season(
     @Column(name = "end_date")
     var endDate: LocalDate,
 
-    @OneToMany(mappedBy = "season")
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "season")
     var games: MutableSet<Game> = mutableSetOf()
 ) : BaseEntity()

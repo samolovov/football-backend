@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "players")
-class Player(
+open class Player(
     @Column(name = "first_name")
     var firstName: String,
     @Column(name = "last_name")

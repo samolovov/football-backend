@@ -11,7 +11,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "season_teams")
-class SeasonTeam(
+open class SeasonTeam(
     @ManyToOne
     @JoinColumn(name = "season_id")
     val season: Season,
