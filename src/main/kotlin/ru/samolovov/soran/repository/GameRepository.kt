@@ -14,25 +14,10 @@ interface GameRepository : CrudRepository<Game, Long> {
     @Query(PLAYERS_STATS_SEASON_JPQL)
     fun findAllPlayerStats(@Param("seasonId") seasonId: Long): List<PlayerStatsDto>
 
-    @Query(
-        nativeQuery = true, value = """
-        select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
-            sum(tmp.wins) as wins, sum(tmp.draws) as draws, sum(tmp.loses) as loses from (
-                select g.first_team_id as teamId, sum(g.first_team_goals) as scored, sum(g.second_team_goals) as missed,
-                    sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as wins,
-                    sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
-                    sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as loses
-                from games g where g.season_id = :seasonId group by g.first_team_id
-                  union 
-                select g.second_team_id as teamId, sum(g.second_team_goals) as scored, sum(g.first_team_goals) as missed,
-                    sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as wins,
-                    sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
-                    sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as loses
-                from games g where g.season_id = :seasonId group by g.second_team_id
-            ) as tmp 
-        group by tmp.teamId
-    """
-    )
+    @Query(nativeQuery = true, value = TEAMS_STATS_GLOBAL_SQL)
+    fun findAllTeamStats(): List<TeamStatsDto>
+
+    @Query(nativeQuery = true, value = TEAMS_STATS_SEASON_SQL)
     fun findAllTeamStats(@Param("seasonId") seasonId: Long): List<TeamStatsDto>
 
     companion object {
@@ -56,5 +41,35 @@ interface GameRepository : CrudRepository<Game, Long> {
         private const val PLAYERS_STATS_SEASON_CONDITION = """ where seasonId = :seasonId """
         private const val PLAYERS_STATS_SEASON_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_SEASON_CONDITION + PLAYERS_STATS_END
         private const val PLAYERS_STATS_GLOBAL_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_END
+
+        private const val TEAMS_STATS_BEGIN = """
+            select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
+                sum(tmp.wins) as wins, sum(tmp.draws) as draws, sum(tmp.loses) as loses from (
+                    select g.first_team_id as teamId, sum(g.first_team_goals) as scored, sum(g.second_team_goals) as missed,
+                        sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as wins,
+                        sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
+                        sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as loses
+                    from games g """
+        private const val TEAMS_STATS_MIDDLE = """ group by g.first_team_id
+                      union 
+                    select g.second_team_id as teamId, sum(g.second_team_goals) as scored, sum(g.first_team_goals) as missed,
+                        sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as wins,
+                        sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
+                        sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as loses
+                    from games g """
+        private const val TEAMS_STATS_END = """group by g.second_team_id
+                ) as tmp 
+            group by tmp.teamId
+        """
+        private const val TEAMS_STATS_SEASON_CONDITION = """ where g.season_id = :seasonId """
+        private const val TEAMS_STATS_SEASON_SQL = TEAMS_STATS_BEGIN +
+                TEAMS_STATS_SEASON_CONDITION +
+                TEAMS_STATS_MIDDLE +
+                TEAMS_STATS_SEASON_CONDITION +
+                TEAMS_STATS_END
+
+        private const val TEAMS_STATS_GLOBAL_SQL = TEAMS_STATS_BEGIN +
+                TEAMS_STATS_MIDDLE +
+                TEAMS_STATS_END
     }
 }

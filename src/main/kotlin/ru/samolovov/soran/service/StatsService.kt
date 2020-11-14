@@ -19,6 +19,10 @@ class StatsService(
         return gameRepository.findAllPlayerStats(seasonId)
     }
 
+    fun getForAllTeams(): List<TeamStatsDto> {
+        return gameRepository.findAllTeamStats()
+    }
+
     fun getForAllTeams(seasonId: Long): List<TeamStatsDto> {
         return gameRepository.findAllTeamStats(seasonId)
     }
