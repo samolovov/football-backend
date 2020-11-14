@@ -40,9 +40,9 @@ insert into season_team_players values (10, 3, 10);
 insert into season_team_players values (11, 3, 11);
 insert into season_team_players values (12, 3, 12);
 -- games
-insert into games values (1, 1, 1, 2, 7, 3, 1);
-insert into games values (2, 1, 2, 3, 1, 2, 2);
-insert into games values (3, 1, 1, 3, 4, 1, 1);
+insert into games values (1, 1, 1, 2, 7, 3, '2019-03-12', 1);
+insert into games values (2, 1, 2, 3, 1, 2, '2019-03-13', 2);
+insert into games values (3, 1, 1, 3, 4, 1, '2019-03-14', 1);
 -- game details
 insert into game_details values (1, 1, 1, 1, 'GOAL', 10);
 insert into game_details values (2, 1, 1, 1, 'GOAL', 11);

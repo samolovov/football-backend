@@ -1,5 +1,7 @@
 package ru.samolovov.soran.dto
 
+import java.time.LocalDate
+
 class GameDto(
     val id: Long? = null,
     val seasonId: Long,
@@ -7,5 +9,6 @@ class GameDto(
     val secondTeamId: Long,
     val firstTeamGoals: Int,
     val secondTeamGoals: Int,
+    val date: LocalDate,
     val refereeId: Long
 )

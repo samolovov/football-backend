@@ -15,6 +15,6 @@ class StatsSeasonController(
     @GetMapping("/scorers")
     fun getScorers(@PathVariable("seasonId") seasonId: Long) = statsService.getScorers(seasonId)
 
-    @GetMapping("/teamGoals")
-    fun getTeamGoals(@PathVariable("seasonId") seasonId: Long) = statsService.getTeamGoals(seasonId)
+    @GetMapping("/teams")
+    fun getAllTeamStats(@PathVariable("seasonId") seasonId: Long) = statsService.getAllTeamStats(seasonId)
 }

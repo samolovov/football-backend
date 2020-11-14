@@ -40,7 +40,8 @@ class GameService(
                     secondTeam = secondTeam,
                     firstTeamGoals = firstTeamGoals,
                     secondTeamGoals = secondTeamGoals,
-                    referee = referee
+                    referee = referee,
+                    date = date
                 )
             }).toGameDto()
     }
@@ -60,6 +61,7 @@ class GameService(
         game.firstTeamGoals = gameDto.firstTeamGoals
         game.secondTeamGoals = gameDto.secondTeamGoals
         game.referee = referee
+        game.date = gameDto.date
 
         return gameRepository.save(game).toGameDto()
     }
@@ -77,5 +79,6 @@ internal fun Game.toGameDto() = GameDto(
     secondTeamId = secondTeam.id!!,
     firstTeamGoals = firstTeamGoals,
     secondTeamGoals = secondTeamGoals,
-    refereeId = referee.id!!
+    refereeId = referee.id!!,
+    date = date
 )

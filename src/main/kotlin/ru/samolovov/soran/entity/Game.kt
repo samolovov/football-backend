@@ -1,5 +1,6 @@
 package ru.samolovov.soran.entity
 
+import java.time.LocalDate
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -29,6 +30,9 @@ open class Game(
 
     @Column(name = "second_team_goals")
     var secondTeamGoals: Int,
+
+    @Column(name = "date")
+    var date: LocalDate,
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "referee_id")

@@ -18,8 +18,15 @@
             <column name="second_team_id" type="bigint">
                 <constraints nullable="false" references="teams(id)" foreignKeyName="games_teams_second_fk"/>
             </column>
-            <column name="first_team_goals" type="integer"/>
-            <column name="second_team_goals" type="integer"/>
+            <column name="first_team_goals" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="second_team_goals" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
             <column name="referee_id" type="bigint">
                 <constraints nullable="false" references="referees(id)" foreignKeyName="games_referees_fk"/>
             </column>

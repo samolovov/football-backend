@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import ru.samolovov.soran.dto.SeasonScorerDto
-import ru.samolovov.soran.dto.SeasonTeamGoalsDto
+import ru.samolovov.soran.dto.SeasonTeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
@@ -18,15 +18,22 @@ interface GameRepository : CrudRepository<Game, Long> {
 
     @Query(
         nativeQuery = true, value = """
-        select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed from (
-            select g.first_team_id as teamId, sum(g.first_team_goals) as scored, sum(g.second_team_goals) as missed 
-            from games g where g.season_id = :seasonId group by g.first_team_id
-              union 
-            select g.second_team_id as teamId, sum(g.second_team_goals) as scored, sum(g.first_team_goals) as missed 
-            from games g where g.season_id = :seasonId group by g.second_team_id
+        select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
+            sum(tmp.wins) as wins, sum(tmp.draws) as draws, sum(tmp.loses) as loses from (
+                select g.first_team_id as teamId, sum(g.first_team_goals) as scored, sum(g.second_team_goals) as missed,
+                    sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as wins,
+                    sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
+                    sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as loses
+                from games g where g.season_id = :seasonId group by g.first_team_id
+                  union 
+                select g.second_team_id as teamId, sum(g.second_team_goals) as scored, sum(g.first_team_goals) as missed,
+                    sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as wins,
+                    sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
+                    sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as loses
+                from games g where g.season_id = :seasonId group by g.second_team_id
             ) as tmp 
         group by tmp.teamId
     """
     )
-    fun findTeamGoalsBySeason(@Param("seasonId") seasonId: Long): List<SeasonTeamGoalsDto>
+    fun findAllTeamStats(@Param("seasonId") seasonId: Long): List<SeasonTeamStatsDto>
 }
