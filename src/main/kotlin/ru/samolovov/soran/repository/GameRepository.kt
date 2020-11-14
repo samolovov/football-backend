@@ -3,32 +3,16 @@ package ru.samolovov.soran.repository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import ru.samolovov.soran.dto.SeasonPlayerStatsDto
-import ru.samolovov.soran.dto.SeasonTeamStatsDto
+import ru.samolovov.soran.dto.PlayerStatsDto
+import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
-    @Query(
-        """
-            select 
-                p.id as id, 
-                p.firstName as firstName, 
-                p.lastName as lastName, 
-                sum(case when gd.type = 'NORMAL_GOAL' then 1 else 0 end) as normalGoals,
-                sum(case when gd.type = 'PENALTY_GOAL' then 1 else 0 end) as penaltyGoals,
-                sum(case when gd.type = 'AUTO_GOAL' then 1 else 0 end) as autoGoals,
-                sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
-                sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
-                sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties,
-                sum(case when gd.type = 'PENALTY_MISS' then 1 else 0 end) as penaltyMisses
-            from Game g
-                join g.details gd 
-                join gd.player p
-            where 
-                g.season.id = :seasonId group by p.id
-        """
-    )
-    fun findScorersBySeason(@Param("seasonId") seasonId: Long): List<SeasonPlayerStatsDto>
+    @Query(PLAYERS_STATS_GLOBAL_JPQL)
+    fun findAllPlayerStats(): List<PlayerStatsDto>
+
+    @Query(PLAYERS_STATS_SEASON_JPQL)
+    fun findAllPlayerStats(@Param("seasonId") seasonId: Long): List<PlayerStatsDto>
 
     @Query(
         nativeQuery = true, value = """
@@ -49,5 +33,28 @@ interface GameRepository : CrudRepository<Game, Long> {
         group by tmp.teamId
     """
     )
-    fun findAllTeamStats(@Param("seasonId") seasonId: Long): List<SeasonTeamStatsDto>
+    fun findAllTeamStats(@Param("seasonId") seasonId: Long): List<TeamStatsDto>
+
+    companion object {
+        private const val PLAYERS_STATS_BEGIN = """
+            select 
+                p.id as id, 
+                p.firstName as firstName, 
+                p.lastName as lastName, 
+                sum(case when gd.type = 'NORMAL_GOAL' then 1 else 0 end) as normalGoals,
+                sum(case when gd.type = 'PENALTY_GOAL' then 1 else 0 end) as penaltyGoals,
+                sum(case when gd.type = 'AUTO_GOAL' then 1 else 0 end) as autoGoals,
+                sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
+                sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
+                sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties,
+                sum(case when gd.type = 'PENALTY_MISS' then 1 else 0 end) as penaltyMisses
+            from Game g
+                join g.details gd 
+                join gd.player p
+        """
+        private const val PLAYERS_STATS_END = """ group by p.id """
+        private const val PLAYERS_STATS_SEASON_CONDITION = """ where seasonId = :seasonId """
+        private const val PLAYERS_STATS_SEASON_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_SEASON_CONDITION + PLAYERS_STATS_END
+        private const val PLAYERS_STATS_GLOBAL_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_END
+    }
 }

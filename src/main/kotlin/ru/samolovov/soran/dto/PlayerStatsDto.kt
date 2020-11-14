@@ -1,6 +1,6 @@
 package ru.samolovov.soran.dto
 
-interface SeasonPlayerStatsDto {
+interface PlayerStatsDto {
     val id: Long
     val firstName: String
     val lastName: String

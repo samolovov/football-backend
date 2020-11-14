@@ -2,8 +2,8 @@ package ru.samolovov.soran.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.samolovov.soran.dto.SeasonPlayerStatsDto
-import ru.samolovov.soran.dto.SeasonTeamStatsDto
+import ru.samolovov.soran.dto.PlayerStatsDto
+import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.repository.GameRepository
 
 @Service
@@ -11,11 +11,15 @@ import ru.samolovov.soran.repository.GameRepository
 class StatsService(
     private val gameRepository: GameRepository
 ) {
-    fun getForAllPlayers(seasonId: Long): List<SeasonPlayerStatsDto> {
-        return gameRepository.findScorersBySeason(seasonId)
+    fun getForAllPlayers(): List<PlayerStatsDto> {
+        return gameRepository.findAllPlayerStats()
     }
 
-    fun getForAllTeams(seasonId: Long): List<SeasonTeamStatsDto> {
+    fun getForAllPlayers(seasonId: Long): List<PlayerStatsDto> {
+        return gameRepository.findAllPlayerStats(seasonId)
+    }
+
+    fun getForAllTeams(seasonId: Long): List<TeamStatsDto> {
         return gameRepository.findAllTeamStats(seasonId)
     }
 }

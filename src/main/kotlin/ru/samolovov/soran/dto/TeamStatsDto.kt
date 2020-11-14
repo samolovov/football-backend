@@ -1,6 +1,6 @@
 package ru.samolovov.soran.dto
 
-interface SeasonTeamStatsDto {
+interface TeamStatsDto {
     val teamId: Long
     val scored: Long
     val missed: Long
