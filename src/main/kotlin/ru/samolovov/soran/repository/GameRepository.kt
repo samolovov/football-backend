@@ -9,20 +9,10 @@ import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
-    @Query("""
-        select 
-            r.id as id, 
-            r.firstName as firstName, 
-            r.lastName as lastName, 
-            count(distinct g.id) as games,
-            sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
-            sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
-            sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties
-        from Game g
-            join g.referee r
-            join g.details gd
-        group by r.id
-    """)
+    @Query(REFEREE_STATS_GLOBAL_JPQL)
+    fun findRefereeStats(@Param("refereeId") refereeId: Long): RefereeStatsDto?
+
+    @Query(REFEREES_STATS_GLOBAL_JPQL)
     fun findAllRefereeStats(): List<RefereeStatsDto>
 
     @Query(PLAYER_STATS_GLOBAL_JPQL)
@@ -44,6 +34,7 @@ interface GameRepository : CrudRepository<Game, Long> {
     fun findAllTeamStats(@Param("seasonId") seasonId: Long): List<TeamStatsDto>
 
     companion object {
+        //players
         private const val PLAYERS_STATS_BEGIN = """
             select 
                 p.id as id, 
@@ -69,6 +60,7 @@ interface GameRepository : CrudRepository<Game, Long> {
                 """ where p.id = :playerId """ +
                 PLAYERS_STATS_END
 
+        //teams
         private const val TEAMS_STATS_BEGIN = """
             select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
                 sum(tmp.wins) as wins, sum(tmp.draws) as draws, sum(tmp.loses) as loses from (
@@ -105,5 +97,25 @@ interface GameRepository : CrudRepository<Game, Long> {
         private const val TEAMS_STATS_GLOBAL_SQL = TEAMS_STATS_BEGIN +
                 TEAMS_STATS_MIDDLE +
                 TEAMS_STATS_END
+
+        //referees
+        private const val REFEREES_STATS_BEGIN = """
+            select 
+                r.id as id, 
+                r.firstName as firstName, 
+                r.lastName as lastName, 
+                count(distinct g.id) as games,
+                sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
+                sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
+                sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties
+            from Game g
+                join g.referee r
+                join g.details gd
+        """
+        private const val REFEREES_STATS_END = """ group by r.id """
+        private const val REFEREE_STATS_GLOBAL_JPQL = REFEREES_STATS_BEGIN +
+                """ where r.id = :refereeId """ +
+                REFEREES_STATS_END
+        private const val REFEREES_STATS_GLOBAL_JPQL = REFEREES_STATS_BEGIN + REFEREES_STATS_END
     }
 }
