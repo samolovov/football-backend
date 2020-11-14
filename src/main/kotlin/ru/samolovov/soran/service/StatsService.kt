@@ -11,6 +11,10 @@ import ru.samolovov.soran.repository.GameRepository
 class StatsService(
     private val gameRepository: GameRepository
 ) {
+    fun getForPlayer(playerId: Long): PlayerStatsDto? {
+        return gameRepository.findPlayerStats(playerId)
+    }
+
     fun getForAllPlayers(): List<PlayerStatsDto> {
         return gameRepository.findAllPlayerStats()
     }

@@ -8,6 +8,9 @@ import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
+    @Query(PLAYER_STATS_GLOBAL_JPQL)
+    fun findPlayerStats(@Param("playerId") playerId: Long): PlayerStatsDto?
+
     @Query(PLAYERS_STATS_GLOBAL_JPQL)
     fun findAllPlayerStats(): List<PlayerStatsDto>
 
@@ -38,9 +41,13 @@ interface GameRepository : CrudRepository<Game, Long> {
                 join gd.player p
         """
         private const val PLAYERS_STATS_END = """ group by p.id """
-        private const val PLAYERS_STATS_SEASON_CONDITION = """ where seasonId = :seasonId """
-        private const val PLAYERS_STATS_SEASON_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_SEASON_CONDITION + PLAYERS_STATS_END
+        private const val PLAYERS_STATS_SEASON_JPQL = PLAYERS_STATS_BEGIN +
+                """ where g.season.id = :seasonId """ +
+                PLAYERS_STATS_END
         private const val PLAYERS_STATS_GLOBAL_JPQL = PLAYERS_STATS_BEGIN + PLAYERS_STATS_END
+        private const val PLAYER_STATS_GLOBAL_JPQL = PLAYERS_STATS_BEGIN +
+                """ where p.id = :playerId """ +
+                PLAYERS_STATS_END
 
         private const val TEAMS_STATS_BEGIN = """
             select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
