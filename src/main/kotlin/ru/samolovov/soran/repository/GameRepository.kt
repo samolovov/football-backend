@@ -17,6 +17,9 @@ interface GameRepository : CrudRepository<Game, Long> {
     @Query(PLAYERS_STATS_SEASON_JPQL)
     fun findAllPlayerStats(@Param("seasonId") seasonId: Long): List<PlayerStatsDto>
 
+    @Query(nativeQuery = true, value = TEAM_STATS_GLOBAL_SQL)
+    fun findTeamStats(@Param("teamId") teamId: Long): TeamStatsDto?
+
     @Query(nativeQuery = true, value = TEAMS_STATS_GLOBAL_SQL)
     fun findAllTeamStats(): List<TeamStatsDto>
 
@@ -69,10 +72,17 @@ interface GameRepository : CrudRepository<Game, Long> {
             group by tmp.teamId
         """
         private const val TEAMS_STATS_SEASON_CONDITION = """ where g.season_id = :seasonId """
+        private const val TEAMS_STATS_ID_CONDITION = """ where g.team_id = :teamId """
         private const val TEAMS_STATS_SEASON_SQL = TEAMS_STATS_BEGIN +
                 TEAMS_STATS_SEASON_CONDITION +
                 TEAMS_STATS_MIDDLE +
                 TEAMS_STATS_SEASON_CONDITION +
+                TEAMS_STATS_END
+
+        private const val TEAM_STATS_GLOBAL_SQL = TEAMS_STATS_BEGIN +
+                TEAMS_STATS_ID_CONDITION +
+                TEAMS_STATS_MIDDLE +
+                TEAMS_STATS_ID_CONDITION +
                 TEAMS_STATS_END
 
         private const val TEAMS_STATS_GLOBAL_SQL = TEAMS_STATS_BEGIN +

@@ -18,6 +18,9 @@ class StatsGlobalController(
     @GetMapping("/players")
     fun getForAllPlayers() = statsService.getForAllPlayers()
 
+    @GetMapping("/team/{teamId}")
+    fun getForTeam(@PathVariable("teamId") teamId: Long) = statsService.getForTeam(teamId)
+
     @GetMapping("/teams")
     fun getForAllTeams() = statsService.getForAllTeams()
 }
