@@ -39,7 +39,7 @@ interface GameRepository : CrudRepository<Game, Long> {
             select 
                 p.id as id, 
                 p.firstName as firstName, 
-                p.lastName as lastName, 
+                p.lastName as lastName,
                 sum(case when gd.type = 'NORMAL_GOAL' then 1 else 0 end) as normalGoals,
                 sum(case when gd.type = 'PENALTY_GOAL' then 1 else 0 end) as penaltyGoals,
                 sum(case when gd.type = 'AUTO_GOAL' then 1 else 0 end) as autoGoals,
@@ -62,16 +62,30 @@ interface GameRepository : CrudRepository<Game, Long> {
 
         //teams
         private const val TEAMS_STATS_BEGIN = """
-            select tmp.teamId as teamId, sum(tmp.scored) as scored, sum(tmp.missed) as missed,
-                sum(tmp.wins) as wins, sum(tmp.draws) as draws, sum(tmp.loses) as loses from (
-                    select g.first_team_id as teamId, sum(g.first_team_goals) as scored, sum(g.second_team_goals) as missed,
+            select 
+                tmp.teamId as teamId, 
+                sum(tmp.games) as games, 
+                sum(tmp.scored) as scored, 
+                sum(tmp.missed) as missed,
+                sum(tmp.wins) as wins,
+                sum(tmp.draws) as draws,
+                sum(tmp.loses) as loses from (
+                    select 
+                        g.first_team_id as teamId, 
+                        count(g.id) as games,
+                        sum(g.first_team_goals) as scored, 
+                        sum(g.second_team_goals) as missed,
                         sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as wins,
                         sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
                         sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as loses
                     from games g """
         private const val TEAMS_STATS_MIDDLE = """ group by g.first_team_id
-                      union 
-                    select g.second_team_id as teamId, sum(g.second_team_goals) as scored, sum(g.first_team_goals) as missed,
+                        union 
+                    select 
+                        g.second_team_id as teamId,
+                        count(g.id) as games,
+                        sum(g.second_team_goals) as scored, 
+                        sum(g.first_team_goals) as missed,
                         sum(case when (g.first_team_goals < g.second_team_goals) then 1 else 0 end) as wins,
                         sum(case when (g.first_team_goals = g.second_team_goals) then 1 else 0 end) as draws,
                         sum(case when (g.first_team_goals > g.second_team_goals) then 1 else 0 end) as loses
