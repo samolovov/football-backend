@@ -12,9 +12,9 @@ class StatsSeasonController(
     private val statsService: StatsService
 ) {
 
-    @GetMapping("/scorers")
-    fun getScorers(@PathVariable("seasonId") seasonId: Long) = statsService.getScorers(seasonId)
+    @GetMapping("/players")
+    fun getForAllPlayers(@PathVariable("seasonId") seasonId: Long) = statsService.getForAllPlayers(seasonId)
 
     @GetMapping("/teams")
-    fun getAllTeamStats(@PathVariable("seasonId") seasonId: Long) = statsService.getAllTeamStats(seasonId)
+    fun getForAllTeams(@PathVariable("seasonId") seasonId: Long) = statsService.getForAllTeams(seasonId)
 }

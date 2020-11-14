@@ -10,5 +10,5 @@ class GameDetailsDto(
 )
 
 enum class Type {
-    GOAL, AUTOGOAL, YELLOW, RED
+    NORMAL_GOAL, PENALTY_GOAL, AUTO_GOAL, PENALTY_MISS, YELLOW, RED, PENALTY
 }

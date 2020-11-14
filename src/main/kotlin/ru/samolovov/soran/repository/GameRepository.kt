@@ -3,18 +3,32 @@ package ru.samolovov.soran.repository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import ru.samolovov.soran.dto.SeasonScorerDto
+import ru.samolovov.soran.dto.SeasonPlayerStatsDto
 import ru.samolovov.soran.dto.SeasonTeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
     @Query(
-        """select p.id as id, p.firstName as firstName, p.lastName as lastName, count(gd.id) as goals from Game g
-            join g.details gd 
-            join gd.player p
-            where gd.type='GOAL' and g.season.id = :seasonId group by p.id"""
+        """
+            select 
+                p.id as id, 
+                p.firstName as firstName, 
+                p.lastName as lastName, 
+                sum(case when gd.type = 'NORMAL_GOAL' then 1 else 0 end) as normalGoals,
+                sum(case when gd.type = 'PENALTY_GOAL' then 1 else 0 end) as penaltyGoals,
+                sum(case when gd.type = 'AUTO_GOAL' then 1 else 0 end) as autoGoals,
+                sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
+                sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
+                sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties,
+                sum(case when gd.type = 'PENALTY_MISS' then 1 else 0 end) as penaltyMisses
+            from Game g
+                join g.details gd 
+                join gd.player p
+            where 
+                g.season.id = :seasonId group by p.id
+        """
     )
-    fun findScorersBySeason(@Param("seasonId") seasonId: Long): List<SeasonScorerDto>
+    fun findScorersBySeason(@Param("seasonId") seasonId: Long): List<SeasonPlayerStatsDto>
 
     @Query(
         nativeQuery = true, value = """
