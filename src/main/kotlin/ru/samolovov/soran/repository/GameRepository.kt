@@ -4,10 +4,27 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import ru.samolovov.soran.dto.PlayerStatsDto
+import ru.samolovov.soran.dto.RefereeStatsDto
 import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.entity.Game
 
 interface GameRepository : CrudRepository<Game, Long> {
+    @Query("""
+        select 
+            r.id as id, 
+            r.firstName as firstName, 
+            r.lastName as lastName, 
+            count(distinct g.id) as games,
+            sum(case when gd.type = 'YELLOW' then 1 else 0 end) as yellows,
+            sum(case when gd.type = 'RED' then 1 else 0 end) as reds,
+            sum(case when gd.type = 'PENALTY' then 1 else 0 end) as penalties
+        from Game g
+            join g.referee r
+            join g.details gd
+        group by r.id
+    """)
+    fun findAllRefereeStats(): List<RefereeStatsDto>
+
     @Query(PLAYER_STATS_GLOBAL_JPQL)
     fun findPlayerStats(@Param("playerId") playerId: Long): PlayerStatsDto?
 

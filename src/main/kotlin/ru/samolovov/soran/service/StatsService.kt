@@ -3,6 +3,7 @@ package ru.samolovov.soran.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.samolovov.soran.dto.PlayerStatsDto
+import ru.samolovov.soran.dto.RefereeStatsDto
 import ru.samolovov.soran.dto.TeamStatsDto
 import ru.samolovov.soran.repository.GameRepository
 
@@ -11,6 +12,10 @@ import ru.samolovov.soran.repository.GameRepository
 class StatsService(
     private val gameRepository: GameRepository
 ) {
+    fun getForAllReferees(): List<RefereeStatsDto> {
+        return gameRepository.findAllRefereeStats()
+    }
+
     fun getForPlayer(playerId: Long): PlayerStatsDto? {
         return gameRepository.findPlayerStats(playerId)
     }

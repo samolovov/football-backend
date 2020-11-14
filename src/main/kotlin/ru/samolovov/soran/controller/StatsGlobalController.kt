@@ -12,6 +12,9 @@ class StatsGlobalController(
     private val statsService: StatsService
 ) {
 
+    @GetMapping("/referees")
+    fun getForAllReferees() = statsService.getForAllReferees()
+
     @GetMapping("/player/{playerId}")
     fun getForPlayer(@PathVariable("playerId") playerId: Long) = statsService.getForPlayer(playerId)
 
