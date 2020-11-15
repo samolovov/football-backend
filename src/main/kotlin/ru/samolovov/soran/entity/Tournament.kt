@@ -7,6 +7,6 @@ import javax.persistence.Table
 @Entity
 @Table(name = "tournaments")
 open class Tournament(
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     var name: String
 ) : BaseEntity()
