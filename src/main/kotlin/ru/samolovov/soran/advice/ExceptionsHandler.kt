@@ -37,9 +37,8 @@ class ExceptionsHandler {
         request: WebRequest
     ): ErrorMessage {
         val errors = e.bindingResult.allErrors.map {
-            val fieldName = (it as FieldError).field
-            val errorMessage = it.defaultMessage
-            "$fieldName: $errorMessage"
+            val name = if (it is FieldError) it.field else it.objectName
+            "$name: ${it.defaultMessage}"
         }
         return ErrorMessage(
             status = HttpStatus.BAD_REQUEST,
