@@ -1,36 +1,25 @@
 package ru.samolovov.soran.exception
 
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
+open class NotFoundException(message: String) : RuntimeException(message)
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class TeamNotFoundException(id: Long) : RuntimeException("Team with id=$id not found")
+class TeamNotFoundException(id: Long) : NotFoundException("Team with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class TeamsNotFoundException(ids: Set<Long>) : RuntimeException("Teams with ids=$ids not found")
+class TeamsNotFoundException(ids: Set<Long>) : NotFoundException("Teams with ids=$ids not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class PlayerNotFoundException(id: Long) : RuntimeException("Player with id=$id not found")
+class PlayerNotFoundException(id: Long) : NotFoundException("Player with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class PlayersNotFoundException(ids: Set<Long>) : RuntimeException("Players with ids=$ids not found")
+class PlayersNotFoundException(ids: Set<Long>) : NotFoundException("Players with ids=$ids not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class GameNotFoundException(id: Long) : RuntimeException("Game with id=$id not found")
+class GameNotFoundException(id: Long) : NotFoundException("Game with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class GameDetailsNotFoundException(id: Long) : RuntimeException("Game details with id=$id not found")
+class GameDetailsNotFoundException(id: Long) : NotFoundException("Game details with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class RefereeNotFoundException(id: Long) : RuntimeException("Referee with id=$id not found")
+class RefereeNotFoundException(id: Long) : NotFoundException("Referee with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class TournamentNotFoundException(id: Long) : RuntimeException("Tournament with id=$id not found")
+class TournamentNotFoundException(id: Long) : NotFoundException("Tournament with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class SeasonNotFoundException(id: Long) : RuntimeException("Season with id=$id not found")
+class SeasonNotFoundException(id: Long) : NotFoundException("Season with id=$id not found")
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
 class SeasonTeamNotFoundException(seasonId: Long, teamId: Long) : RuntimeException(
     "Season team with seasonId=$seasonId and teamId=$teamId not found"
 )
