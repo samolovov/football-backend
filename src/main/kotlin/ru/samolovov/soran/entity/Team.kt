@@ -8,7 +8,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "teams")
 open class Team(
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     var name: String,
     @Column(name = "birthday")
     var birthday: LocalDate? = null,
