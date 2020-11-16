@@ -44,7 +44,8 @@ abstract class IntegrationTests {
         secondTeamId = secondTeamId,
         firstTeamGoals = firstTeamGoals,
         secondTeamGoals = secondTeamGoals,
-        refereeId = refereeId
+        refereeId = refereeId,
+        date = randomDate()
     )
 
     protected fun buildSeasonTeam(seasonId: Long, teamId: Long, playerIds: Set<Long>) =

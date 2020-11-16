@@ -110,7 +110,7 @@ class GameDetailsServiceTest(
         gameId = game.id!!,
         teamId = team1.id!!,
         playerId = player.id!!,
-        type = Type.GOAL,
+        type = Type.NORMAL_GOAL,
         minute = Random.nextInt(0, 90)
     )
 
