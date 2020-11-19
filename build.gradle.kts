@@ -29,7 +29,9 @@ dependencies {
 	//liquibase
 	implementation("org.liquibase:liquibase-core")
 	//h2
-	runtimeOnly("com.h2database:h2")
+	//runtimeOnly("com.h2database:h2")
+	//postgres
+	implementation("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

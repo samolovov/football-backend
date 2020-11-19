@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  app:
+    container_name: football-app
+    image: psamolovov/football-app
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  database:
+    container_name: football-db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: football-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
